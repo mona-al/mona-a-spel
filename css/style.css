@@ -7,31 +7,22 @@
 
 body {
     height: 100vh;
+     /* bakgrund som skiftar mellan två färger */
     background: linear-gradient(
         0deg,
         rgb(100, 50, 149) 0%,
         rgb(85, 162, 206) 100%
     );
+    /* till att centrera spelnamnet */
     text-align: center;
     overflow: hidden;
 }
 
-.canvasbackground {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 1000px; 
-    height: 500px;
-    transform: translate(-50%, -50%);
-}
-
 #canvas {
-
     border: 5px solid rgb(59, 70, 105);
     position:absolute;
     top: 50%;
     left: 50%;
-    /*background-image: url('img/cemetery.png');*/
     transform: translate(-50%, -50%);
     width: 1000px; 
     height: 500px;

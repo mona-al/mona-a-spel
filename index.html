@@ -6,8 +6,6 @@
         <meta charset="UTF-8">
         <title>Ghost Bombers</title>
         <link rel="stylesheet" href="css/style.css">
-        <script src="simple.js"></script>
-        <script src="advanced.js"></script>
     </head>
     <body>
         <script src="simple.js">
@@ -20,7 +18,7 @@
 
 
             
-            
+            // till att skapa flera "enemies" i slumpmmässiga koordinater
             var enemies = [];
 
             enemies.push({x: random(totalWidth),
@@ -40,9 +38,9 @@
                         speed: random(1,5),
                         height:85,
                         width:75};
+
             function update()
             {
-            clearScreen();
 
             picture(background.x, background.y, "img/cemetery.png");
             
@@ -52,6 +50,7 @@
         
             picture(enemy.x, enemy.y, "img/pixel-bomb.png");
 
+            // till att både få player1 att använda WASD pilar och hålla sig inom canvas
 
             if (keyboard.d)
                 if (player1.x < totalWidth - (player1.width + 5))
@@ -66,6 +65,8 @@
                 if (player1.y > 5)
                     player1.y += -10;
 
+            // player2 med vanliga pilar och att hålla sig inom canvas
+
             if (keyboard.right)
                 if (player2.x < totalWidth - (player2.width + 5))
                     player2.x += 10;
@@ -78,6 +79,8 @@
             if (keyboard.up)
                 if (player2.y > 5)
                 player2.y += -10;
+
+            // att "enemy" ska följa efter både player1 och player2 men välja den med kortast distans
                 
             if (distance(enemy.x, enemy.y, player1.x, player1.y) < distance(enemy.x, enemy.y, player2.x, player2.y)){
                 if (enemy.x < player1.x)
@@ -101,12 +104,17 @@
                 else
                     enemy.y -= enemy.speed;
             }    
+
+            // om distansen mellan player1 och enemy når den siffran så avslutas spelet med texted "Game over" i blått
         
             if (distance(player1, enemy) < 60)
             {
                 text(100, 250, 100, "Game over!", "blue");
                 stopUpdate();
             }
+
+            // om distansen mellan player2 och enemy når den siffran så avslutas spelet med texted "Game over" i rött
+
             if (distance(player2, enemy) < 60)
             {
                 text(100, 250, 100, "Game over!", "red");
