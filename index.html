@@ -12,9 +12,28 @@
 
             var background = {x:0, y:0, height: 500, width:1000};
 
+            //var bullet1 = {x: 500, y: 250, xSpeed: 10};
+
             const player1 = {x:0, y:325, height:105, width:85};
 
             const player2 = {x:0, y:115, height:105, width:85};
+
+            
+            var bullet1 = {
+            x: (player1.x + player1.width),
+            y: (player1.y + player1.height/2),
+            speed: 5,
+            active: false
+            };
+
+            // Add an event listener for the space key
+            window.addEventListener("keydown", function(event) {
+            if (event.code === "Space") {
+                bullet1.active = true;
+            }
+            });
+
+            //var bullet1 = {x: player1.x + player1.width, y: player1.y + player1.height/2, xSpeed: 10};
 
 
             
@@ -39,90 +58,122 @@
                         height:85,
                         width:75};
 
+
+
             function update()
             {
+                // till att både få player1 att använda WASD pilar och hålla sig inom canvas
+                if (keyboard.d)
+                    if (player1.x < totalWidth - (player1.width + 5))
+                        player1.x += 10;
+                if (keyboard.a)
+                    if (player1.x > 0)
+                        player1.x += -10;
+                if (keyboard.s)
+                    if (player1.y < totalHeight - player1.height)
+                        player1.y += 10;
+                if (keyboard.w)
+                    if (player1.y > 5)
+                        player1.y += -10;
 
-            picture(background.x, background.y, "img/cemetery.png");
-            
-            picture(player1.x, player1.y, "img/pixel-ghost.png");
+                // player2 med vanliga pilar och att hålla sig inom canvas
+                if (keyboard.right)
+                    if (player2.x < totalWidth - (player2.width + 5))
+                        player2.x += 10;
+                if (keyboard.left)
+                    if (player2.x > 0)
+                        player2.x += -10;
+                if (keyboard.down)
+                    if (player2.y < totalHeight - player2.height)
+                        player2.y += 10;
+                if (keyboard.up)
+                    if (player2.y > 5)
+                        player2.y += -10;
 
-            picture(player2.x, player2.y, "img/pixel-ghostie.png");
-        
-            picture(enemy.x, enemy.y, "img/pixel-bomb.png");
+                /*if (keyboard.space)
+                    bullet1.x += bullet1.xSpeed;
+                */                        
 
-            // till att både få player1 att använda WASD pilar och hålla sig inom canvas
-
-            if (keyboard.d)
-                if (player1.x < totalWidth - (player1.width + 5))
-                player1.x += 10;
-            if (keyboard.a)
-                if (player1.x > 0)
-                    player1.x += -10;
-            if (keyboard.s)
-                if (player1.y < totalHeight - player1.height)
-                    player1.y += 10;
-            if (keyboard.w)
-                if (player1.y > 5)
-                    player1.y += -10;
-
-            // player2 med vanliga pilar och att hålla sig inom canvas
-
-            if (keyboard.right)
-                if (player2.x < totalWidth - (player2.width + 5))
-                    player2.x += 10;
-            if (keyboard.left)
-                if (player2.x > 0)
-                player2.x += -10;
-            if (keyboard.down)
-                if (player2.y < totalHeight - player2.height)
-                player2.y += 10;
-            if (keyboard.up)
-                if (player2.y > 5)
-                player2.y += -10;
-
-            // att "enemy" ska följa efter både player1 och player2 men välja den med kortast distans
+                if (bullet1.active) {
+                    bullet1.x += bullet1.speed; // flytta skottet åt höger
                 
-            if (distance(enemy.x, enemy.y, player1.x, player1.y) < distance(enemy.x, enemy.y, player2.x, player2.y)){
-                if (enemy.x < player1.x)
-                    enemy.x += enemy.speed;
-                else
-                    enemy.x -= enemy.speed;
-            
-                if (enemy.y < player1.y)
-                    enemy.y += enemy.speed;
-                else
-                    enemy.y -= enemy.speed;
-            } else {
+                    // testar om skottet nått slutet av canvasen
+                    if (bullet1.x > 1000) {
+                        bullet1.active = false;
+                        bullet1.x = player1.x;
+                        bullet1.y = player1.y;
+                    }
+                } else {
+                    bullet1.x = player1.x;
+                    bullet1.y = player1.y;
+                }                
 
-                if (enemy.x < player2.x)
-                    enemy.x += enemy.speed;
-                else
-                    enemy.x -= enemy.speed;
-            
-                if (enemy.y < player2.y)
-                    enemy.y += enemy.speed;
-                else
-                    enemy.y -= enemy.speed;
-            }    
+                clearScreen();
 
-            // om distansen mellan player1 och enemy når den siffran så avslutas spelet med texted "Game over" i blått
-        
-            if (distance(player1, enemy) < 60)
-            {
-                text(100, 250, 100, "Game over!", "blue");
-                stopUpdate();
+                //var bullet1 = {x: player1.x + player1.width, y: player1.y + player1.height/2, xSpeed: 10};
+                
+
+                picture(background.x, background.y, "img/cemetery.png");
+
+                //circle(bullet1.x, bullet1.y, 3, "black");
+                
+                picture(player1.x, player1.y, "img/pixel-ghost.png");
+
+                picture(player2.x, player2.y, "img/pixel-ghostie.png");
+
+                if (bullet1.active) {
+                    circle(bullet1.x, bullet1.y, 3, "black");
+                    //picture(bullet1.x, bullet1.y, 5, 5, "img/fire-ball.png");
+                }
+            
+                picture(enemy.x, enemy.y, "img/pixel-bomb.png");
+
+                // att "enemy" ska följa efter både player1 och player2 men välja den med kortast distans
+                    
+                if (distance(enemy.x, enemy.y, player1.x, player1.y) < distance(enemy.x, enemy.y, player2.x, player2.y)){
+                    if (enemy.x < player1.x)
+                        enemy.x += enemy.speed;
+                    else
+                        enemy.x -= enemy.speed;
+                
+                    if (enemy.y < player1.y)
+                        enemy.y += enemy.speed;
+                    else
+                        enemy.y -= enemy.speed;
+                } else {
+
+                    if (enemy.x < player2.x)
+                        enemy.x += enemy.speed;
+                    else
+                        enemy.x -= enemy.speed;
+                
+                    if (enemy.y < player2.y)
+                        enemy.y += enemy.speed;
+                    else
+                        enemy.y -= enemy.speed;
+                }    
+
+                // om distansen mellan player1 och enemy når den siffran så avslutas spelet med texted "Game over" i blått
+            
+                if (distance(player1, enemy) < 60)
+                {
+                    text(100, 250, 100, "Game over!", "blue");
+                    stopUpdate();
+                }
+
+                // om distansen mellan player2 och enemy når den siffran så avslutas spelet med texted "Game over" i rött
+
+                if (distance(player2, enemy) < 60)
+                {
+                    text(100, 250, 100, "Game over!", "red");
+                    // alert("Game over");
+                    stopUpdate();
+                }
+                
             }
 
-            // om distansen mellan player2 och enemy når den siffran så avslutas spelet med texted "Game over" i rött
-
-            if (distance(player2, enemy) < 60)
-            {
-                text(100, 250, 100, "Game over!", "red");
-                // alert("Game over");
-                stopUpdate();
-            }
             
-            }
+            //setInterval(update, 60);
         
         
         </script>
