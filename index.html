@@ -18,19 +18,39 @@
 
             const player2 = {x:0, y:115, height:105, width:85};
 
+            /*var bulletImg = new Image();
+            bulletImg.src = "img/fire-ball.png";*/
+
+            /*
+            let enemy = document.getElementById('enemy');
+
+            enemy.remove = function() {
+                if (this.parentNode) {
+                    this.parentNode.removeChild(this);
+                    this = null;
+                }
+            };
+            */
             
+            
+            
+            var bullets = [];
+
             var bullet1 = {
-            x: (player1.x + player1.width),
-            y: (player1.y + player1.height/2),
-            speed: 5,
             active: false
             };
+            
 
             // Add an event listener for the space key
             window.addEventListener("keydown", function(event) {
-            if (event.code === "Space") {
-                bullet1.active = true;
-            }
+                if (event.code === "Space") {
+                    bullets.push({
+                        x: player1.x + player1.width,
+                        y: player1.y + player1.height/ 2,
+                        speed: 5,
+                        active: true
+                    });
+                }
             });
 
             //var bullet1 = {x: player1.x + player1.width, y: player1.y + player1.height/2, xSpeed: 10};
@@ -40,28 +60,57 @@
             // till att skapa flera "enemies" i slumpmmässiga koordinater
             var enemies = [];
 
-            enemies.push({x: random(totalWidth),
+            enemies.push({x: 1000,
                         y: random(totalHeight),
                         speed: random(1,5)});
         
-            enemies.push({x: random(totalWidth),
+            enemies.push({x: 1000,
                         y: random(totalHeight),
                         speed: random(1,5)});
         
-            enemies.push({x: random(totalWidth),
+            enemies.push({x: 1000,
                         y: random(totalHeight),
                         speed: random(1,5)});
-        
-            const enemy = {x: 1000,
+
+               var enemy = {
+                        x: 1000,
                         y: random(totalHeight),
                         speed: random(1,5),
                         height:85,
-                        width:75};
+                        width:75
+                        
+                    /*remove: function() {
+                        if (distance(bullet1.x, bullet1.y, enemy.x, enemy.y) < 30) {
+                            bullet1.active = false;
+                            enemy.width = 0;
+                            enemy.height = 0;
+                        }
+                    }*/
+                };
+                
+            /*enemy.remove = function() {
+                    if (distance(bullet1.x, bullet1.y, enemy.x, enemy.y) < 30) {
+                        bullet1.active = false;
+                        enemy.width = 0;
+                        enemy.height = 0;
+                    }
+            };*/
+        
+            /*var enemy = {x: 1000,
+                        y: random(totalHeight),
+                        speed: random(1,5),
+                        height:85,
+                        width:75};*/
+            
 
 
 
             function update()
             {
+
+
+                
+                
                 // till att både få player1 att använda WASD pilar och hålla sig inom canvas
                 if (keyboard.d)
                     if (player1.x < totalWidth - (player1.width + 5))
@@ -90,10 +139,14 @@
                     if (player2.y > 5)
                         player2.y += -10;
 
+                
+
+
                 /*if (keyboard.space)
                     bullet1.x += bullet1.xSpeed;
                 */                        
 
+                /*
                 if (bullet1.active) {
                     bullet1.x += bullet1.speed; // flytta skottet åt höger
                 
@@ -106,7 +159,8 @@
                 } else {
                     bullet1.x = player1.x;
                     bullet1.y = player1.y;
-                }                
+                }   
+                */             
 
                 clearScreen();
 
@@ -121,10 +175,61 @@
 
                 picture(player2.x, player2.y, "img/pixel-ghostie.png");
 
+                for (var i = 0; i < bullets.length; i++) {
+                    var bullet1 = bullets[i];
+                    
+                    if (bullet1.active) {
+                    bullet1.x += bullet1.speed;
+                    
+                        if (bullet1.x > 1000) {
+                            bullet1.active = false;
+                        } else {
+                            picture(bullet1.x, bullet1.y, "img/pixel-fire.png");
+                        }
+                        
+                        /*
+                        if (distance(bullet1.x, bullet1.y, enemy.x, enemy.y) < 30) {
+                            bullet1.active = false;
+                            enemy.remove();
+                        }
+                        */
+                        
+                    }              
+                }
+
+                //let testing = {}; // example object
+
+                /*
+                if (testing && testing.hasOwnProperty('property')) {
+                // do something with obj.property
+                } else {
+                console.log("Object does not exist or property does not exist");
+                }*/
+                
+
+
+                // remove inactive bullets
+                bullets = bullets.filter(function(bullet1) {
+                    return bullet1 && bullet1.hasOwnProperty('active') && bullet1.active;
+                });
+
+
+
+                
+                /*
+                if (distance(bullet1.active, enemy) < 60)
+                {
+                    bullet1.active = false;
+                    enemy.remove();
+                }
+                */
+
+                /*
                 if (bullet1.active) {
                     circle(bullet1.x, bullet1.y, 3, "black");
                     //picture(bullet1.x, bullet1.y, 5, 5, "img/fire-ball.png");
                 }
+                */
             
                 picture(enemy.x, enemy.y, "img/pixel-bomb.png");
 
