@@ -17,6 +17,7 @@
                 const player1 = {x:0, y:325, height:105, width:85};
 
                 const player2 = {x:0, y:115, height:105, width:85};
+            
                 
                 var myMusic;
 
@@ -24,9 +25,13 @@
 
                 var bullets = [];
 
-                var bullet1 = {
+                var bullet = { // bullet är inaktiv från början
                 active: false
                 };
+
+                var score = 0; // Poängräknare
+                
+                
                 
 
                 // lägger till en event listener för "space key"
@@ -53,7 +58,8 @@
 
                 function update()
                 {
-                    
+
+
                     myMusic.play();
                     
                     // till att både få player1 att använda WASD pilar och hålla sig inom canvas
@@ -87,6 +93,13 @@
                     clearScreen();
 
                     picture(background.x, background.y, "img/cemetery.png");
+
+                    // Ökar poäng
+                    score++;
+
+                    // Visar poängräknare
+                    text(820, 20, 20, "Score: " + score, "white");
+                  
                     
                     picture(player1.x, player1.y, "img/pixel-ghost.png");
 
@@ -94,22 +107,22 @@
 
                     //Denna loop itererar över varje bullet i bullet array och uppdaterar dess position
                     for (var i = 0; i < bullets.length; i++) {
-                        var bullet1 = bullets[i];
+                        var bullet = bullets[i];
                         
-                        if (bullet1.active) {
-                        bullet1.x += bullet1.speed;
+                        if (bullet.active) {
+                        bullet.x += bullet.speed;
                         
-                            if (bullet1.x > 1000) {
-                                bullet1.active = false;
+                            if (bullet.x > 1000) {
+                                bullet.active = false;
                             } else {
-                                picture(bullet1.x, bullet1.y, "img/pixel-fire.png");
+                                picture(bullet.x, bullet.y, "img/pixel-fire.png");
                             }
                         }              
                     }
 
                     // tar bort inaktiva "bullets"
-                    bullets = bullets.filter(function(bullet1) {
-                        return bullet1 && bullet1.hasOwnProperty('active') && bullet1.active;
+                    bullets = bullets.filter(function(bullet) {
+                        return bullet && bullet.hasOwnProperty('active') && bullet.active;
                     });
 
                     picture(enemy.x, enemy.y, "img/pixel-bomb.png");
