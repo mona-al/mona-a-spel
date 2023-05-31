@@ -9,7 +9,7 @@ body {
     height: 100%;
 }
 
-/* Header in main menu */
+/* Header i main menu */
 
 h1 {
     text-align: center;
@@ -168,17 +168,4 @@ footer p a {
     text-decoration: none;
     color: rgb(0, 115, 27);
     font-weight: bold;
-}
-
-
-
-
-
-
-
-
-
-/*
-.player1 {
-    padding-left: 5px;
 }
